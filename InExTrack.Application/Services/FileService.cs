@@ -1,6 +1,8 @@
 ﻿using InExTrack.Application.DTOs;
+using InExTrack.Application.Exceptions;
 using InExTrack.Application.Interfaces.Services;
-using InExTrack.Exceptions;
+using Microsoft.AspNetCore.Hosting;
+using Microsoft.AspNetCore.Http;
 
 namespace InExTrack.Application.Services
 {

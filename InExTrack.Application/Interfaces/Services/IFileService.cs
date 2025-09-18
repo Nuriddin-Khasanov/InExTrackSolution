@@ -1,4 +1,5 @@
 ﻿using InExTrack.Application.DTOs;
+using Microsoft.AspNetCore.Http;
 
 namespace InExTrack.Application.Interfaces.Services
 {

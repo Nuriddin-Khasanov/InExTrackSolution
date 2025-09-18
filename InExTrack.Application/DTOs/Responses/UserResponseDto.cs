@@ -1,4 +1,6 @@
-﻿namespace InExTrack.Application.DTOs.Responses
+﻿using Microsoft.AspNetCore.Http;
+
+namespace InExTrack.Application.DTOs.Responses
 {
     public class UserResponseDto
     {

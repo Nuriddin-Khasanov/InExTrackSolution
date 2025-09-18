@@ -1,9 +1,10 @@
-﻿using InExTrack.Application.Interfaces.Services;
+﻿using System.IdentityModel.Tokens.Jwt;
+using InExTrack.Application.Interfaces.Services;
 using InExTrack.Domain.Models;
-using Microsoft.IdentityModel.Tokens;
-using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
 using System.Text;
+using Microsoft.Extensions.Configuration;
+using Microsoft.IdentityModel.Tokens;
 
 namespace InExTrack.Application.Services
 {

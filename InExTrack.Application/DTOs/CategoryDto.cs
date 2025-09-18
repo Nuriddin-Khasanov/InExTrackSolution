@@ -1,4 +1,5 @@
 ﻿using InExTrack.Domain.Enums;
+using Microsoft.AspNetCore.Http;
 
 namespace InExTrack.Application.DTOs
 {

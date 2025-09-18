@@ -1,5 +1,5 @@
-﻿using InExTrack.Common;
-using System.ComponentModel.DataAnnotations;
+﻿using System.ComponentModel.DataAnnotations;
+using InExTrack.Domain.Commons;
 
 namespace InExTrack.Domain.Models
 {

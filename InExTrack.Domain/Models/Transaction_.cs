@@ -1,4 +1,4 @@
-﻿using InExTrack.Common;
+﻿using InExTrack.Domain.Commons;
 
 namespace InExTrack.Domain.Models
 {

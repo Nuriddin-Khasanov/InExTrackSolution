@@ -1,7 +1,6 @@
 ﻿using InExTrack.Application.DTOs;
 using InExTrack.Application.DTOs.Requests;
 using InExTrack.Application.DTOs.Responses;
-using InExTrack.Models;
 
 namespace InExTrack.Application.Interfaces.Services;
 

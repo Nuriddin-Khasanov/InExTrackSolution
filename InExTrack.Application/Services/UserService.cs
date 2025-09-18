@@ -4,7 +4,6 @@ using InExTrack.Application.DTOs.Responses;
 using InExTrack.Application.Interfaces.Repositories;
 using InExTrack.Application.Interfaces.Services;
 using InExTrack.Domain.Models;
-using InExTrack.Models;
 using Mapster;
 using Microsoft.AspNetCore.Mvc;
 
