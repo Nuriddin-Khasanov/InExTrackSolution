@@ -14,9 +14,10 @@ namespace InExTrack.WebApi.Controllers
     public class AuthController(IUserService _userService) : ApiBaseController
     {
         [HttpPost("login")]
-        public async Task<IActionResult> Login([FromForm] LoginRequest_ request)
+        public async Task<IActionResult> Login([FromBody] LoginRequest_ request)
         {
             var token = await _userService.AuthenticateAsync(request.Username, request.Password);
+
             if (token == null)
                 return Unauthorized();
 
@@ -31,26 +32,27 @@ namespace InExTrack.WebApi.Controllers
             return Ok(success);
         }
 
-       // [Authorize]
+        [Authorize]
         [HttpGet]
         public async Task<IActionResult> GetUserByIdAsync(CancellationToken cancellationToken)
         {
-            return Ok(await _userService.GetUserById(getUserId(), cancellationToken));
+            var a = await _userService.GetUserById(GetUserId(), cancellationToken);
+
+            return Ok(a);
         }
 
-        [Authorize]
+      //  [Authorize]
         [HttpPut]
         public async Task<IActionResult> UpdateUser([FromForm] UserRequestsDto userDto, CancellationToken cancellationToken)
         {
-            return Ok(await _userService.UpdateUserById(getUserId(), userDto, cancellationToken));
+            return Ok(await _userService.UpdateUserById(GetUserId(), userDto, cancellationToken));
         }
 
-        [Authorize]
+      //  [Authorize]
         [HttpDelete]
         public async Task<IActionResult> DeleteUser(CancellationToken cancellationToken)
         {
-            return Ok(await _userService.DeleteUser(getUserId(), cancellationToken));
+            return Ok(await _userService.DeleteUser(GetUserId(), cancellationToken));
         }
-
     }
 }

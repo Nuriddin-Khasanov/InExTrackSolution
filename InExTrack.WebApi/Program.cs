@@ -1,14 +1,8 @@
-using FluentValidation;
-using InExTrack.Application.Interfaces.Repositories;
+п»їusing InExTrack.Application.Interfaces.Repositories;
 using InExTrack.Application.Interfaces.Services;
 using InExTrack.Application.Services;
-//using InExTrack.DataContext;
 using InExTrack.Infrastructure.DataContext;
 using InExTrack.Infrastructure.Repositories;
-//using InExTrack.Interfaces.Repositories;
-//using InExTrack.Interfaces.Services;
-//using InExTrack.Repositories;
-//using InExTrack.Services;
 using Mapster;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.EntityFrameworkCore;
@@ -19,10 +13,9 @@ using System.Text;
 
 var builder = WebApplication.CreateBuilder(args);
 
-
 var jwtKey = builder.Configuration["Jwt:Key"];
 if (string.IsNullOrEmpty(jwtKey))
-    throw new InvalidOperationException("JWT ключ не найден в конфигурации.");
+    throw new InvalidOperationException("JWT РєР»СЋС‡ РЅРµ РЅР°Р№РґРµРЅ РІ РєРѕРЅС„РёРіСѓСЂР°С†РёРё.");
 
 builder.Services.AddAuthentication(options =>
 {
@@ -34,13 +27,21 @@ builder.Services.AddAuthentication(options =>
 {
     options.TokenValidationParameters = new TokenValidationParameters
     {
-        ValidateIssuer = false,   // лучше включить и задать issuer
-        ValidateAudience = false, // лучше включить и задать audience
+        ValidateIssuer = true,
+        ValidateAudience = true,
         ValidateLifetime = true,
         ValidateIssuerSigningKey = true,
-        //ValidIssuer = builder.Configuration["Jwt:Issuer"],
-        //ValidAudience = builder.Configuration["Jwt:Audience"],
+        ValidIssuer = builder.Configuration["Jwt:Issuer"],
+        ValidAudience = builder.Configuration["Jwt:Audience"],
         IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(jwtKey))
+    };
+    options.Events = new JwtBearerEvents
+    {
+        OnAuthenticationFailed = context =>
+        {
+            Console.WriteLine("Authentication failed: " + context.Exception.Message);
+            return Task.CompletedTask;
+        }
     };
 });
 
@@ -87,29 +88,23 @@ builder.Services.AddSwaggerGen(options =>
 });
 
 
-
-// ? Регистрируем Mapster ДО builder.Build()
+// ? Р РµРіРёСЃС‚СЂРёСЂСѓРµРј Mapster Р”Рћ builder.Build()
 builder.Services.AddMapster();
 TypeAdapterConfig.GlobalSettings.Scan(Assembly.GetExecutingAssembly());
 
-builder.Services.AddDbContext<AppDBContext>
-    (options => options.UseNpgsql(builder.Configuration.GetConnectionString("DefaultConnection")));
+builder.Services.AddDbContext<AppDBContext>(options => options.UseNpgsql(builder.Configuration.GetConnectionString("DefaultConnection")));
 
 builder.Services.AddScoped<IUserRepository, UserRepository>();
 builder.Services.AddScoped<IUserService, UserService>();
 builder.Services.AddScoped<ICategoryRepository, CategoryRepository>();
 builder.Services.AddScoped<ICategoryService, CategoryService>();
 builder.Services.AddScoped<IUserCategoryRepository, UserCategoryRepository>();
-//builder.Services.AddScoped<IUserCategoryService, UserCategoryService>();
 builder.Services.AddScoped<ITransactionRepository, TransactionRepository>();
 builder.Services.AddScoped<ITransactionService, TransactionService>();
-builder.Services.AddScoped<IJWTService, JWTService>();
+builder.Services.AddScoped<IJWTService, JwtService>();
 builder.Services.AddScoped<IFileService, FileService>();
 
-
 var app = builder.Build();
-
-
 
 // Configure the HTTP request pipeline.
 if (app.Environment.IsDevelopment())
@@ -121,9 +116,9 @@ if (app.Environment.IsDevelopment())
     });
 }
 
-app.UseStaticFiles();
-app.UseHttpsRedirection();
 app.UseAuthentication();
 app.UseAuthorization();
+app.UseStaticFiles();
+app.UseHttpsRedirection();
 app.MapControllers();
 app.Run();

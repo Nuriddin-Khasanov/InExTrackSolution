@@ -6,7 +6,7 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace InExTrack.WebApi.Controllers
 {
-    [Authorize]
+   // [Authorize]
     [Route("api/[controller]")]
     [ApiController]
     public class CategoryController(ICategoryService _categoryService) : ApiBaseController
@@ -14,32 +14,33 @@ namespace InExTrack.WebApi.Controllers
         [HttpGet]
         public async Task<IActionResult> GetCategories(CancellationToken cancellationToken)
         {
-            var categories = await _categoryService.GetCategories(getUserId(), cancellationToken);
+            var userId = GetUserId();
+            var categories = await _categoryService.GetCategories(GetUserId(), cancellationToken);
             return Ok(categories);
         }
 
         [HttpGet("{id}")]
         public async Task<IActionResult> GetCategoryById(Guid id, CancellationToken cancellationToken)
         {
-            return Ok(await _categoryService.GetCategoryById(getUserId(), id, cancellationToken));
+            return Ok(await _categoryService.GetCategoryById(GetUserId(), id, cancellationToken));
         }
 
         [HttpPost]
         public async Task<IActionResult> CreateCategory([FromForm] CategoryDto categoryDto, CancellationToken cancellationToken)
         {
-            return Ok(await _categoryService.CreateCategory(getUserId(), categoryDto, cancellationToken));
+            return Ok(await _categoryService.CreateCategory(GetUserId(), categoryDto, cancellationToken));
         }
 
         [HttpPut("{id}")]
         public async Task<IActionResult> UpdateCategory([FromBody] Guid id, CategoryDto updatedCategory, CancellationToken cancellationToken)
         {
-            return Ok(await _categoryService.UpdateCategory(getUserId(), id, updatedCategory, cancellationToken));
+            return Ok(await _categoryService.UpdateCategory(GetUserId(), id, updatedCategory, cancellationToken));
         }
 
         [HttpDelete("{id}")]
         public async Task<IActionResult> DeleteCategory(Guid id, CancellationToken cancellationToken)
         {
-            return Ok(await _categoryService.DeleteCategory(getUserId(), id, cancellationToken));
+            return Ok(await _categoryService.DeleteCategory(GetUserId(), id, cancellationToken));
         }
 
     }

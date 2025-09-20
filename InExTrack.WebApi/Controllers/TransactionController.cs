@@ -6,7 +6,7 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace InExTrack.WebApi.Controllers
 {
-    [Authorize]
+   // [Authorize]
     [Route("api/[controller]")]
     [ApiController]
     public class TransactionController(ITransactionService _transactionService) : ApiBaseController
@@ -14,7 +14,7 @@ namespace InExTrack.WebApi.Controllers
         [HttpGet]
         public async Task<IActionResult> GetTransactions(CancellationToken cancellationToken)
         {
-            var transactions = await _transactionService.GetTransactionsAsync(getUserId(), cancellationToken);
+            var transactions = await _transactionService.GetTransactionsAsync(GetUserId(), cancellationToken);
             return Ok(transactions);
         }
 
